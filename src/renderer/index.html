@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSH Profile Manager</title>
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body class="font-mono bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+  <div class="container mx-auto px-2 pt-1 pb-6 max-w-xl">
+    <div class="flex justify-between items-center p-1.5 mb-3 border-b border-gray-200 dark:border-gray-800">
+      <h1 class="text-center text-base font-medium text-gray-700 dark:text-gray-300">SSH Profile Manager</h1>
+      <!-- Theme Toggle Button --> <button id="themeToggle"
+        class="p-1.5 rounded-md border border-gray-200 dark:border-gray-800 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        <svg class="w-3.5 h-3.5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Sun icon -->
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg> <svg class="w-3.5 h-3.5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- Moon icon -->
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg> </button>
+    </div> <!-- Current Profile Display -->
+
+      <div class="text-xs text-gray-500 dark:text-gray-400">Current Profile:</div>
+      <div id="currentProfile" class="border border-gray-200 dark:border-gray-800 rounded-md p-1.5 my-1.5 text-base font-medium text-blue-600 dark:text-blue-400">None</div>
+
+      <!-- Add Buttons -->
+      <div class="flex gap-1.5 mb-6">
+        <button 
+          id="manageProfile"
+          class="flex items-center gap-1.5 px-2 py-1.5 text-xs border border-green-500 dark:border-green-600 text-green-500 dark:text-green-600 rounded-l-md hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.29417 12.9577L10.5048 16.1681L17.6729 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Manage Profile
+        </button>
+        <button
+          id="createProfile"
+          class="flex items-center gap-1.5 px-2 py-1.5 text-xs border border-blue-500 dark:border-blue-600 text-blue-500 dark:text-blue-600 rounded-r-md hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L12 22" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M2 12L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          Create Profile
+        </button>
+      </div>
+
+      <!-- Profile Creation Form -->
+      <div id="create-profile-form-container" class="hidden border border-gray-200 dark:border-gray-800 rounded-md shadow-sm p-4 mb-4">
+        <h2 class="text-xs font-medium mb-3">Create New Profile</h2>
+        <form id="profileForm" class="space-y-3">
+          <div>
+            <label class="block text-xs font-medium mb-1">Profile Name</label>
+            <input type="text" name="profile" required
+              class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-800 rounded-md bg-white dark:bg-gray-800">
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1">Full Name</label>
+            <input type="text" name="name" required
+              class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-800 rounded-md bg-white dark:bg-gray-800">
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1">GitHub Username</label>
+            <input type="text" name="username" required
+              class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-800 rounded-md bg-white dark:bg-gray-800">
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1">Email</label>
+            <input type="email" name="email" required
+              class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-800 rounded-md bg-white dark:bg-gray-800">
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1">GitHub Token (Optional)</label>
+            <input type="password" name="token"
+              class="w-full px-2.5 py-1.5 text-sm border border-gray-200 dark:border-gray-800 rounded-md bg-white dark:bg-gray-800">
+          </div>
+          <div class="flex gap-2">
+            <button type="submit"
+              class="px-2 py-1.5 text-xs bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-md transition-colors">
+              Create
+            </button>
+            <button type="button" id="cancelCreate"
+              class="px-2 py-1.5 text-xs bg-gray-500 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 text-white rounded-md transition-colors">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Profile List -->
+      <div class="manage-profiles-container border border-gray-200 dark:border-gray-800 rounded-md shadow-sm p-4 mb-4">
+        <h2 class="text-xs font-medium mb-3">Manage Profiles</h2>
+        <div id="profileList"></div>
+      </div>
+
+
+    <script src="renderer.js"></script>
+    <script>
+      // Theme toggle functionality
+      document.addEventListener('DOMContentLoaded', () => {
+        // Check for saved theme preference or system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+
+        // Theme toggle button
+        document.getElementById('themeToggle').addEventListener('click', () => {
+          if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.theme = 'light';
+          } else {
+            document.documentElement.classList.add('dark');
+            localStorage.theme = 'dark';
+          }
+        });
+      });
+    </script>
+</body>
+
+</html>

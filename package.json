@@ -1,0 +1,28 @@
+{
+  "name": "github-ssh-profile-manager",
+  "version": "1.0.0",
+  "main": "dist/main/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "build": "tsc && npm run copy:index && npm run copy:tray && npm run build:css",
+    "dev": "npm run build && npm run start",
+    "build:css": "tailwindcss -i ./src/renderer/styles.css -o ./dist/renderer/styles.css",
+    "copy:index": "cp ./src/renderer/index.html ./dist/renderer/index.html",
+    "copy:tray": "cp ./src/renderer/tray_icon.png ./dist/renderer/tray_icon.png"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "lucide-static": "^0.471.0",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.6",
+    "electron": "^34.0.0"
+  }
+}
