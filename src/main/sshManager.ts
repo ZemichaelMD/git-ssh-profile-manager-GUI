@@ -118,12 +118,29 @@ export async function switchProfile(profile: string): Promise<void> {
     fs.chmodSync(path.join(SSH_DIR, 'id_rsa'), 0o600);
     fs.chmodSync(path.join(SSH_DIR, 'id_rsa.pub'), 0o644);
 
-    // Copy gitconfig if exists
+    // Copy gitconfig if exists and set git config values
     if (fs.existsSync(path.join(profilePath, '.gitconfig'))) {
       fs.copyFileSync(
         path.join(profilePath, '.gitconfig'),
         path.join(os.homedir(), '.gitconfig')
       );
+
+      // Read the gitconfig file to get user values
+      const gitConfigContent = fs.readFileSync(path.join(profilePath, '.gitconfig'), 'utf8');
+      const emailMatch = gitConfigContent.match(/email = (.+)/);
+      const nameMatch = gitConfigContent.match(/name = (.+)/);
+      const usernameMatch = gitConfigContent.match(/user = (.+)/);
+
+      // Set git config values explicitly
+      if (emailMatch && emailMatch[1]) {
+        await execCommand(`git config --global user.email "${emailMatch[1].trim()}"`);
+      }
+      if (nameMatch && nameMatch[1]) {
+        await execCommand(`git config --global user.name "${nameMatch[1].trim()}"`);
+      }
+      if (usernameMatch && usernameMatch[1]) {
+        await execCommand(`git config --global github.user "${usernameMatch[1].trim()}"`);
+      }
     }
 
     // Update SSH config
@@ -205,7 +222,8 @@ export async function clearProfiles(): Promise<void> {
 
 export async function showSshRsa(profile: string): Promise<string> {
   const profilePath = path.join(PROFILE_DIR, profile);
-  const sshRsaPath = path.join(profilePath, 'id_rsa');
+  const sshRsaPath = path.join(profilePath, 'id_rsa.pub');
+  console.log('sshRsaPath___', sshRsaPath);
   if (fs.existsSync(sshRsaPath)) {
     const sshKey = fs.readFileSync(sshRsaPath, 'utf8');
     return sshKey;

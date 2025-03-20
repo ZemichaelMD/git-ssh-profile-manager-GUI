@@ -1,7 +1,11 @@
 {
   "name": "github-ssh-profile-manager",
   "version": "1.0.0",
-  "main": "dist/main/main.js",
+  "main": "./dist/main/main.js",
+  "files": [
+    "dist/**/*",
+    "package.json"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
@@ -9,7 +13,8 @@
     "dev": "npm run build && npm run start",
     "build:css": "tailwindcss -i ./src/renderer/styles.css -o ./dist/renderer/styles.css",
     "copy:index": "cp ./src/renderer/index.html ./dist/renderer/index.html",
-    "copy:tray": "cp ./src/renderer/tray_icon.png ./dist/renderer/tray_icon.png"
+    "copy:tray": "cp ./src/renderer/tray_icon.png ./dist/renderer/tray_icon.png",
+    "dist": "electron-builder"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +28,26 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.6",
-    "electron": "^34.0.0"
+    "electron": "^34.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.github-ssh-profile-manager",
+    "files": [
+      "dist/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
